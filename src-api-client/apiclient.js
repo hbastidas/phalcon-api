@@ -2,7 +2,8 @@ let tinyRick = require('rickmortyapi');
 let $ = require( "jquery" );
 window.$ = window.jQuery = $;
 
-(async function () {
+
+$(document).ready(async function(){
   const episodes = await tinyRick.getEpisode()
 
 
@@ -23,4 +24,4 @@ window.$ = window.jQuery = $;
       )
     ).appendTo("#app")
   });
-})();
+});
