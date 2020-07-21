@@ -1,13 +1,35 @@
 let tinyRick = require('rickmortyapi');
-let $ = require( "jquery" );
-window.$ = window.jQuery = $;
+import $ from 'jquery';
+window.jQuery = $;
+require( 'jszip' );
+require( 'pdfmake' );
+require( 'datatables.net-autofill-dt' );
+require( 'datatables.net-buttons-dt' );
+require( 'datatables.net-buttons/js/buttons.colVis.js' );
+require( 'datatables.net-buttons/js/buttons.flash.js' );
+require( 'datatables.net-buttons/js/buttons.html5.js' );
+require( 'datatables.net-buttons/js/buttons.print.js' );
+require( 'datatables.net-colreorder-dt' );
+require( 'datatables.net-fixedcolumns-dt' );
+require( 'datatables.net-fixedheader-dt' );
+require( 'datatables.net-keytable-dt' );
+require( 'datatables.net-responsive-dt' );
+require( 'datatables.net-rowgroup-dt' );
+require( 'datatables.net-rowreorder-dt' );
+require( 'datatables.net-scroller-dt' );
+//require( 'datatables.net-searchPanes-dt' )(); bug on install and compile webpack
+require( 'datatables.net-select-dt' );
 
+
+let dt = require( 'datatables.net' );
+dt(window, $); 
 
 $(document).ready(async function(){
   const episodes = await tinyRick.getEpisode()
 
-
+  console.log(episodes);
   episodes.results.forEach((item, i) => {
+
     $("<div>").addClass("col").addClass("s12").addClass("m4").append(
       $("<div>").addClass("card").append(
         $("<div>").addClass("card-image").addClass("waves-effect").addClass("waves-block").addClass("waves-light").append(
@@ -23,5 +45,9 @@ $(document).ready(async function(){
         )
       )
     ).appendTo("#app")
+
+    //var t = $('#example').dt();
+
+
   });
 });
