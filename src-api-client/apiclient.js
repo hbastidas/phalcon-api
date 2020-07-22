@@ -1,8 +1,13 @@
 let tinyRick = require('rickmortyapi');
 import $ from 'jquery';
-window.jQuery = $;
-require( 'jszip' );
-require( 'pdfmake' );
+window.jQuery = window.$ = $;
+import * as JSZip from "jszip";
+window.JSZip = JSZip;
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 require( 'datatables.net-autofill-dt' );
 require( 'datatables.net-buttons-dt' );
 require( 'datatables.net-buttons/js/buttons.colVis.js' );
@@ -20,14 +25,26 @@ require( 'datatables.net-scroller-dt' );
 //require( 'datatables.net-searchPanes-dt' )(); bug on install and compile webpack
 require( 'datatables.net-select-dt' );
 
-
-let dt = require( 'datatables.net' );
-dt(window, $); 
+window.$.DataTable = require( 'datatables.net' );
+window.rickapi=tinyRick;
 
 $(document).ready(async function(){
-  const episodes = await tinyRick.getEpisode()
+  global.episodes = await tinyRick.getEpisode()
 
-  console.log(episodes);
+  $('#example').DataTable( {
+    data: global.episodes.results,
+    columns: [
+        { data: 'name' , "title": "nombre"},
+        { data: 'air_date' , "title": "fecha de emision"},
+        { data: 'episode' , "title": "episodio"}
+    ],
+    order: [[ 2, 'asc' ]],
+    dom: 'Bfrtip',
+    buttons: [
+         'excelHtml5', 'pdf'
+    ]
+  } );
+
   episodes.results.forEach((item, i) => {
 
     $("<div>").addClass("col").addClass("s12").addClass("m4").append(
@@ -46,7 +63,7 @@ $(document).ready(async function(){
       )
     ).appendTo("#app")
 
-    //var t = $('#example').dt();
+
 
 
   });
